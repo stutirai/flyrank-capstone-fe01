@@ -1,7 +1,11 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
+import { FormField } from './FormField';
+import { FormSection } from './FormSection';
+import { RadioGroup } from './RadioGroup';
 import { Toggle } from './Toggle';
 import {
+  BIO_MAX_LENGTH,
   defaultSettings,
   type SettingsFormData,
   type SettingsFormErrors,
@@ -12,6 +16,11 @@ import { validateSettings, hasErrors } from '../utils/validateSettings';
 import './SettingsForm.css';
 
 type SaveStatus = 'idle' | 'saving' | 'saved' | 'error';
+
+const PRIVACY_OPTIONS = [
+  { value: 'public' as const, label: 'Public', description: 'Anyone can view your profile.' },
+  { value: 'private' as const, label: 'Private', description: 'Only you can see your profile.' },
+];
 
 export default function SettingsForm() {
   const [formData, setFormData] = useState<SettingsFormData>(defaultSettings);
@@ -70,86 +79,53 @@ export default function SettingsForm() {
         </p>
       </header>
 
-      <form className="settings__form" onSubmit={handleSubmit} noValidate>
-        <section className="settings__section">
-          <h2 className="settings__section-title">Profile</h2>
-          <p className="settings__section-description">
-            Update your personal information visible to others.
-          </p>
+      <form className="settings__form" onSubmit={handleSubmit} noValidate aria-label="Account settings">
+        <FormSection
+          title="Profile"
+          description="Update your personal information visible to others."
+        >
+          <FormField
+            id="displayName"
+            label="Display name"
+            type="text"
+            value={formData.displayName}
+            onChange={(e) => updateField('displayName', e.target.value)}
+            placeholder="Jane Doe"
+            autoComplete="name"
+            required
+            error={errors.displayName}
+          />
 
-          <div className="field">
-            <label htmlFor="displayName" className="field__label">
-              Display name
-            </label>
-            <input
-              id="displayName"
-              type="text"
-              className={`field__input ${errors.displayName ? 'field__input--error' : ''}`}
-              value={formData.displayName}
-              onChange={(e) => updateField('displayName', e.target.value)}
-              placeholder="Jane Doe"
-              autoComplete="name"
-            />
-            {errors.displayName && (
-              <span className="field__error" role="alert">
-                {errors.displayName}
-              </span>
-            )}
-          </div>
+          <FormField
+            id="email"
+            label="Email address"
+            type="email"
+            value={formData.email}
+            onChange={(e) => updateField('email', e.target.value)}
+            placeholder="jane@example.com"
+            autoComplete="email"
+            required
+            error={errors.email}
+          />
 
-          <div className="field">
-            <label htmlFor="email" className="field__label">
-              Email address
-            </label>
-            <input
-              id="email"
-              type="email"
-              className={`field__input ${errors.email ? 'field__input--error' : ''}`}
-              value={formData.email}
-              onChange={(e) => updateField('email', e.target.value)}
-              placeholder="jane@example.com"
-              autoComplete="email"
-            />
-            {errors.email && (
-              <span className="field__error" role="alert">
-                {errors.email}
-              </span>
-            )}
-          </div>
+          <FormField
+            as="textarea"
+            id="bio"
+            label="Bio"
+            optional
+            value={formData.bio}
+            onChange={(e) => updateField('bio', e.target.value)}
+            placeholder="A short bio about yourself..."
+            rows={3}
+            maxLength={BIO_MAX_LENGTH}
+            error={errors.bio}
+          />
+        </FormSection>
 
-          <div className="field">
-            <label htmlFor="bio" className="field__label">
-              Bio
-              <span className="field__label-hint">optional</span>
-            </label>
-            <textarea
-              id="bio"
-              className={`field__input field__textarea ${errors.bio ? 'field__input--error' : ''}`}
-              value={formData.bio}
-              onChange={(e) => updateField('bio', e.target.value)}
-              placeholder="A short bio about yourself..."
-              rows={3}
-              maxLength={300}
-            />
-            <div className="field__footer">
-              {errors.bio ? (
-                <span className="field__error" role="alert">
-                  {errors.bio}
-                </span>
-              ) : (
-                <span />
-              )}
-              <span className="field__counter">{formData.bio.length}/300</span>
-            </div>
-          </div>
-        </section>
-
-        <section className="settings__section">
-          <h2 className="settings__section-title">Notifications</h2>
-          <p className="settings__section-description">
-            Choose how you want to be notified about activity.
-          </p>
-
+        <FormSection
+          title="Notifications"
+          description="Choose how you want to be notified about activity."
+        >
           <div className="settings__toggles">
             <Toggle
               id="emailNotifications"
@@ -173,72 +149,37 @@ export default function SettingsForm() {
               onChange={(checked) => updateField('marketingEmails', checked)}
             />
           </div>
-        </section>
+        </FormSection>
 
-        <section className="settings__section">
-          <h2 className="settings__section-title">Appearance</h2>
-          <p className="settings__section-description">
-            Customize how the app looks and feels.
-          </p>
+        <FormSection
+          title="Appearance"
+          description="Customize how the app looks and feels."
+        >
+          <FormField
+            as="select"
+            id="theme"
+            label="Theme"
+            value={formData.theme}
+            onChange={(e) => updateField('theme', e.target.value as Theme)}
+          >
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+            <option value="system">System default</option>
+          </FormField>
+        </FormSection>
 
-          <div className="field">
-            <label htmlFor="theme" className="field__label">
-              Theme
-            </label>
-            <select
-              id="theme"
-              className="field__input field__select"
-              value={formData.theme}
-              onChange={(e) => updateField('theme', e.target.value as Theme)}
-            >
-              <option value="light">Light</option>
-              <option value="dark">Dark</option>
-              <option value="system">System default</option>
-            </select>
-          </div>
-
-          <Toggle
-            id="compactMode"
-            label="Compact mode"
-            description="Reduce spacing for a denser layout."
-            checked={formData.compactMode}
-            onChange={(checked) => updateField('compactMode', checked)}
+        <FormSection
+          title="Privacy"
+          description="Control who can see your profile information."
+        >
+          <RadioGroup
+            name="profileVisibility"
+            legend="Profile visibility"
+            options={PRIVACY_OPTIONS}
+            value={formData.profileVisibility}
+            onChange={(value) => updateField('profileVisibility', value as ProfileVisibility)}
           />
-        </section>
-
-        <section className="settings__section">
-          <h2 className="settings__section-title">Privacy</h2>
-          <p className="settings__section-description">
-            Control who can see your profile information.
-          </p>
-
-          <fieldset className="radio-group">
-            <legend className="sr-only">Profile visibility</legend>
-            {(
-              [
-                { value: 'public', label: 'Public', desc: 'Anyone can view your profile.' },
-                { value: 'team', label: 'Team only', desc: 'Only your team members can see your profile.' },
-                { value: 'private', label: 'Private', desc: 'Only you can see your profile.' },
-              ] as const
-            ).map(({ value, label, desc }) => (
-              <label key={value} className="radio-option">
-                <input
-                  type="radio"
-                  name="profileVisibility"
-                  value={value}
-                  checked={formData.profileVisibility === value}
-                  onChange={() => updateField('profileVisibility', value as ProfileVisibility)}
-                  className="radio-option__input"
-                />
-                <span className="radio-option__indicator" />
-                <span className="radio-option__content">
-                  <span className="radio-option__label">{label}</span>
-                  <span className="radio-option__desc">{desc}</span>
-                </span>
-              </label>
-            ))}
-          </fieldset>
-        </section>
+        </FormSection>
 
         <footer className="settings__footer">
           <div className="settings__status" aria-live="polite">

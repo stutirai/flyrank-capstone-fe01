@@ -1,4 +1,5 @@
 import type { SettingsFormData, SettingsFormErrors } from '../types/settings';
+import { BIO_MAX_LENGTH } from '../types/settings';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -17,8 +18,8 @@ export function validateSettings(data: SettingsFormData): SettingsFormErrors {
     errors.email = 'Enter a valid email address.';
   }
 
-  if (data.bio.length > 300) {
-    errors.bio = 'Bio must be 300 characters or fewer.';
+  if (data.bio.length > BIO_MAX_LENGTH) {
+    errors.bio = `Bio must be ${BIO_MAX_LENGTH} characters or fewer.`;
   }
 
   return errors;

@@ -1,6 +1,8 @@
 export type Theme = 'light' | 'dark' | 'system';
 
-export type ProfileVisibility = 'public' | 'team' | 'private';
+export type ProfileVisibility = 'public' | 'private';
+
+export const BIO_MAX_LENGTH = 200;
 
 export interface SettingsFormData {
   displayName: string;
@@ -10,7 +12,6 @@ export interface SettingsFormData {
   pushNotifications: boolean;
   marketingEmails: boolean;
   theme: Theme;
-  compactMode: boolean;
   profileVisibility: ProfileVisibility;
 }
 
@@ -22,8 +23,7 @@ export const defaultSettings: SettingsFormData = {
   pushNotifications: false,
   marketingEmails: false,
   theme: 'system',
-  compactMode: false,
-  profileVisibility: 'team',
+  profileVisibility: 'private',
 };
 
 export interface SettingsFormErrors {
