@@ -1,19 +1,44 @@
 # FlyRank Capstone Project
 
-This repository contains my FlyRank Frontend AI Engineering internship capstone project.
+This repository contains my capstone project for the FlyRank Frontend AI Engineering Internship. It documents my progress throughout the internship while applying AI-assisted software development practices to build modern web applications.
 
-## What I'm Building
-A capstone project for the FlyRank Frontend AI Engineering track, focused on applying AI-assisted development practices to build a functional web application. (Exact scope to be finalized as the program progresses.)
+## About the Project
 
-### Planned milestones
-- [ ] Scaffold project setup
-- [ ] Build core UI components
-- [ ] Integrate AI-assisted feature(s)
-- [ ] Polish, test, and deploy
+The goal of this repository is to demonstrate effective collaboration with AI tools, structured development workflows, and frontend engineering best practices. Each assignment builds practical skills in prompting, React development, Git workflows, documentation, and project organization.
+
+## Current Progress
+
+- ✅ Project setup completed
+- ✅ React + TypeScript + Vite configured
+- ✅ AI-assisted workflow comparison completed
+- ✅ React Settings Form with validation implemented
+- ✅ Git branching workflow (Round One & Round Two)
+- 🚧 More frontend features will be added throughout the internship
 
 ## Tech Stack
+
 - React
-- Claude Code / Cursor
+- TypeScript
+- Vite
+- Git & GitHub
+- Cursor AI / Claude
+- HTML
+- CSS
+- JavaScript
+
+## Repository Structure
+
+- `main` – Initial project setup
+- `round-one` – Implementation using a vague AI prompt
+- `round-two` – Improved implementation using a detailed AI prompt, workflow comparison, and updated project rules
+
+## Learning Goals
+
+- Build responsive and accessible web applications
+- Improve AI-assisted development workflows
+- Write maintainable and reusable React components
+- Practice professional Git workflows and documentation
 
 ## Status
-🚧 In progress
+
+🚧 In Progress – Continuously updated as the FlyRank internship progresses.
