@@ -1,9 +1,7 @@
-import SettingsForm from './components/SettingsForm';
+import Playground from "./playground/Playground";
 
-export default function App() {
-  return (
-    <div className="app">
-      <SettingsForm />
-    </div>
-  );
+function App() {
+  return <Playground />;
 }
+
+export default App;
